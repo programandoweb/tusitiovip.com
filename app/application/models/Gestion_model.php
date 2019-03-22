@@ -26,13 +26,33 @@ class Gestion_model extends CI_Model {
 	}
 
 	function Inmuebles(){
+		$order	=	get("order");
+		$search	=	get("search");
+		$start	=	get("start");
+		$length	=	get("length");
+
 		$tabla	=	DB_PREFIJO."anuncio";
-		$this->db->select('id,titulo,precio,estatus,"prueba" as edit')->from($tabla);
+		$this->db->select("SQL_CALC_FOUND_ROWS id", FALSE)
+							->select('id,titulo,precio,estatus,"prueba" as edit')->from($tabla);
+
+		if(empty(get("estatus"))){
+				$this->db->where("estatus<",9);
+		}
+
 		if($this->user->tipo_id>0){
 			$this->db->where("usuario_id",$this->user->usuario_id);
 		}
+		if($search["value"]){
+			$this->db->like("titulo",$search["value"]);
+		}
+		if($order){
+			$this->db->order_by("id");
+		}
+		if($start && $length){
+			$this->db->limit($length,$start);
+		}
 		$query	=	$this->db->get();
-		return foreach_edit($query->result_array());
+		return foreach_edit($query->result_array(),$this->db->query('SELECT FOUND_ROWS() count;')->row()->count);
 	}
 
 	public function Asignaciones($var){
@@ -66,6 +86,7 @@ class Gestion_model extends CI_Model {
 			$var["usuario_id"]		=		$this->user->usuario_id;
 		}
 		$return =	false;
+		$var["json"]	=		json_encode($var["json"]);
 		if($var["id"]==0){
 			$this->return->id		=		$var["id"];
 			unset($var["id"]);

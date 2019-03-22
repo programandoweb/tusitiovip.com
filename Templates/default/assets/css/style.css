@@ -159,9 +159,8 @@ a:focus{
 	border-radius: 0;
 	background: none;
 	border: none;
-	color: #fff;
+	color: #333;
 	border-bottom: 2px solid #97BE0E;
-	color: #fff;
 }
 ::placeholder {
   color: white;

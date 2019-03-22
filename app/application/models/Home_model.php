@@ -112,12 +112,12 @@ class Home_model extends CI_Model {
 	 	}
 	}
 
-	public function getInmueble($id,$campos="*"){
+	public function getInmueble($id,$campos="*",$donde_consulto="apanel"){
 		$tabla	=	DB_PREFIJO."anuncio";
 		$this->db->select('*');
 		$this->db->from($tabla);
 		$this->db->where("id",$id);
-		if($this->user->tipo_id>0){
+		if($this->user->tipo_id>0 && $donde_consulto=='apanel'){
 			$this->db->where("usuario_id",$this->user->usuario_id);
 		}
 		$query	=	$this->db->get();

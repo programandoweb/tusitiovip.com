@@ -51,7 +51,7 @@ class Home extends CI_Controller {
 
 	public function Inmueble(){
 		list($prefijo,$id,$slug) 	=	explode("-",$this->uri->segment(3));
-		$inmueble								=		$this->Home->getInmueble($id);
+		$inmueble								=		$this->Home->getInmueble($id,"*","home");
 		$this->profile					=		usuarios_x_id($inmueble["inmueble"]->usuario_id);
 		$images									=		get_imagesInmuebles($id,"*",false,false,"img-fluid");
 		$set_image							=		"";

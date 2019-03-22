@@ -3,6 +3,7 @@
   $image_portada  = get_portada($perfil_id);
   $image_avatar   = get_avatar($perfil_id);
   $json           = json_decode($this->profile->json);
+  $json_inmueble  = json_decode($inmueble->json);
 ?>
 <section class="slider mb-5 pb-0 shadow">
   <div class="jumbotron top shadow relative bg_portada" style="background-image:url(<?php echo $image_portada?>);">
@@ -174,6 +175,28 @@
         </h2>
         <h5><?php echo GetTipoAccion($inmueble->accion_id);echo ' '; echo GetTipoInmueble($inmueble->tipo_inmueble);?></h5>
         <p><?php echo $inmueble->descripcion;?></p>
+        <div class="row justify-content-md-center p-2">
+          <div class="col-12 col-sm-2 text-center" title="Espacio">
+            <i class="fas fa-home fa-3x"></i><br>
+            <h5><b><?php print($json_inmueble->metros)?>m²</b></h5>
+          </div>
+          <div class="col-12 col-sm-3 text-center" title="Precio">
+            <i class="fas fa-coins fa-3x"></i><br>
+            <h5><b><?php print(format($inmueble->precio,true))?></b></h5>
+          </div>
+          <div class="col-12 col-sm-2 text-center" title="Habitaciones">
+            <i class="fas fa-bed fa-3x"></i><br>
+            <h5><b><?php print($json_inmueble->cuartos)?></b></h5>
+          </div>
+          <div class="col-12 col-sm-2 text-center" title="Baños">
+            <i class="fas fa-bath fa-3x"></i><br>
+            <h5><b><?php print($json_inmueble->banos)?></b></h5>
+          </div>
+          <div class="col-12 col-sm-2 text-center" title="Baños">
+            <i class="fas fa-car fa-3x"></i><br>
+            <h5><b><?php print($json_inmueble->estacionamiento)?></b></h5>
+          </div>
+        </div>
       </div>
       <div class="col-12 col-sm-5">
         <div class="row mt-3" id="contenedor_imagenes">

@@ -75,7 +75,7 @@ class Gestion extends CI_Controller {
     if ($this->input->is_ajax_request() && $this->uri->segment(3)!='Add') {
       /*PARA LLENAR LISTADO*/
       $metodo2=$this->uri->segment(2);
-      echo json_encode(array("data"=>$this->Gestion->$metodo2(get())));
+      echo json_encode($this->Gestion->$metodo2(get()));
       return;
 		}else if(!$this->input->is_ajax_request() &&  $this->uri->segment(3)=='Add' &&  !post()){
       /*PARA CARGAR FORMULARIO*/

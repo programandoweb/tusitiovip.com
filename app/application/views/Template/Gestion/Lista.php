@@ -10,7 +10,7 @@
 <?php
 	//$campo=$data["campos"];
 	if(!empty($this->Breadcrumb)){
-		echo btn_add("NL",false,false,false);
+		echo btn_add("NL",false,false,false,true);
 	}
 ?>
 <div class="container  mt-5">

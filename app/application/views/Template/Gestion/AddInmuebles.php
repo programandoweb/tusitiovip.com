@@ -5,11 +5,28 @@
 	LCDO. JORGE MENDEZ
 	info@programandoweb.net
 */
-$row=	$data["inmueble"];
-$caracteristicas_db	=	$data["caracteristicas"];
-//pre($data);
-
+$row									=		$data["inmueble"];
+$json									=		json_decode(@$row->json);
+$caracteristicas_db		=		$data["caracteristicas"];
 ?>
+
+<?php
+	if(empty($row)){?>
+		<div class="container">
+			<div class="card p-5">
+				<div class="row justify-content-md-center">
+					<div class="col-6 h6 text-center">
+						No autorizado para ver este inmueble.
+					</div>
+				</div>
+			</div>
+		</div>
+<?php
+		return;
+	}
+?>
+
+<?php $caracteristicas		=		GetCaracteristicas();?>
 <?php echo form_open_multipart(current_url(),array('ajaxi' => 'true',"class"=>"form-signin"),array("id"=>$this->uri->segment(4)));	?>
 	<div class="container">
 		<div class="card p-5">
@@ -69,6 +86,20 @@ $caracteristicas_db	=	$data["caracteristicas"];
 						</div>
 						<div class="col-6">
 							<?php echo set_input("promocion",@$row->promocion,$placeholder='Promoción Ej:10000',false,' text-secondary ');?>
+						</div>
+					</div>
+					<div class="row mb-3">
+						<div class="col-3">
+							<input type="number" name="json[banos]" value="<?php echo @$json->banos?>" id="" placeholder="Baños" class="form-control  text-secondary ">
+						</div>
+						<div class="col-3">
+							<input type="number" name="json[cuartos]" value="<?php echo @$json->cuartos?>" id="" placeholder="Cuartos" class="form-control  text-secondary ">
+						</div>
+						<div class="col-3">
+							<input type="number" name="json[estacionamiento]" value="<?php echo @$json->estacionamiento?>" id="" placeholder="Estacionamiento" class="form-control  text-secondary ">
+						</div>
+						<div class="col-3">
+							<input type="number" name="json[metros]" value="<?php echo @$json->metros?>" id="" placeholder="M²" class="form-control  text-secondary ">
 						</div>
 					</div>
 					<div class="row mt-0">
@@ -150,7 +181,7 @@ $caracteristicas_db	=	$data["caracteristicas"];
 					</div>
 					<h3>Características</h3>
 					<div class="row">
-						<?php $caracteristicas		=		GetCaracteristicas();?>
+
 						<div class="col-12  mt-2 mb-2">
 							<h6 class="text-secondary input-group-text p-2 ">En el sitio</h6>
 						</div>

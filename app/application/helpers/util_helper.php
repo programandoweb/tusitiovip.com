@@ -13,7 +13,7 @@ function GetCaracteristicas(){
 										->from(DB_PREFIJO."caracteristicas t1")
 										->where("tipo","On-Site")
 										->get()->result();
-	$return1		=	$return2		=	array();
+	$return1		=	$return2		=	$return3	=	array();
 	foreach ($rows as $key => $value) {
 		$return1[$value->id]		=		$value;
 	}
@@ -24,7 +24,14 @@ function GetCaracteristicas(){
 	foreach ($rows as $key => $value) {
 		$return2[$value->id]		=		$value;
 	}
-	return array("On-Site"=>$return1,"Nearby"=>$return2);
+	$rows			=		$ci->db->select("*")
+										->from(DB_PREFIJO."caracteristicas t1")
+										->where("tipo","Body")
+										->get()->result();
+	foreach ($rows as $key => $value) {
+		$return3[$value->id]		=		$value;
+	}
+	return array("On-Site"=>$return1,"Nearby"=>$return2,"Body"=>$return3);
 }
 
 
@@ -366,7 +373,7 @@ function set_input($name,$row,$placeholder='',$require=false,$class='',$extra=NU
 	echo form_input($data);
 }
 
-function btn_add($add=true,$print=true,$excel=true,$back=false){
+function btn_add($add=true,$print=true,$excel=true,$back=false,$actives=false){
 	$ci=&get_instance();
 	if($ci->input->is_ajax_request() || $ci->uri->segment(5)=='Iframe'){return;}
 	$return 	=	'<div class="container">';
@@ -390,6 +397,13 @@ function btn_add($add=true,$print=true,$excel=true,$back=false){
 						}
 						if($print){
 							$return 	.=	'<a href="'.current_url().'/Print" title="Procesar Impresión" class="btn btn-primary"><i class="fas fa-print"></i></a>';
+						}
+						if($actives){
+							if(get("estatus")){
+								$return 	.=	'<a href="'.current_url().'" title="Activar todos los registros" class="btn btn-primary"><i class="fas fa-toggle-on"></i></a>';
+							}else{
+								$return 	.=	'<a href="'.current_url().'?estatus=1" title="Desactivar todos los registros" class="btn btn-primary"><i class="fas fa-toggle-off"></i></a>';
+							}
 						}
 						if($excel){
 							$return 	.=	'<a href="'.current_url().'/Excel" title="Exportar a Excel" class="btn btn-primary"><i class="fas fa-file-excel"></i></a>';
@@ -433,7 +447,7 @@ function columnas($campo){
 	return $return;
 }
 
-function foreach_edit($data){
+function foreach_edit($data,$count=0){
 	$return	=	array();
 	foreach($data as $k => $v){
 		$id	=	'';
@@ -469,7 +483,9 @@ function foreach_edit($data){
 			}
 		}
 	}
-	return $return;
+	return array(	"data"=>$return,
+								"recordsTotal"=>$count,
+								"recordsFiltered"=>$count);
 }
 
 function FormNoHeader($view,$data=array(),$Apanel="_Apanel"){
@@ -816,6 +832,15 @@ function usuarios_x_token($token){
 	$ci 	=& 	get_instance();
 	$tabla						=	DB_PREFIJO."usuarios";
 	return $ci->db->select("*")->from($tabla)->where("token",$token)->get()->row();
+}
+
+function format($num,$decimal=true){
+	if($num==0 || $num=='') $num=0;
+	if($decimal){
+		return number_format($num, 2, ',', '.');
+	}else{
+		return number_format($num,0, '', '.');
+	}
 }
 
 ?>
