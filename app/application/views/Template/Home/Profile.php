@@ -4,10 +4,19 @@
   $image_avatar   = get_avatar($perfil_id);
   $json           = json_decode($this->profile->json);
 ?>
+<?php
+  if(!empty($this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){
+?>
+    <div class="btn-fixed">
+      <a class="btn btn-secondary" href="<?php echo base_url("apanel");?>">Panel Administrativo</a>
+    </div>
+<?php
+  }
+?>
 <section class="slider mb-5 pb-0 shadow">
   <div class="jumbotron top shadow relative bg_portada" style="background-image:url(<?php echo $image_portada?>);">
     <?php
-      if(!empty($this->user) && strtolower($this->user->login)==strtolower($this->uri->segment(2))){
+      if(!empty($this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){
     ?>
         <div id="cropContainerMinimal" data-bg=".bg_portada"></div>
         <div id="custom-btn" class="btn-edit btn-tooltip" title="Editar Imagen de Portada"  data-toggle="tooltip" data-placement="right">
@@ -17,11 +26,11 @@
       }
     ?>
     <div class="container relative">
-      <?php if(!empty($this->user) && strtolower($this->user->login)==strtolower($this->uri->segment(2))){ echo form_open(base_url("ApiRest/Push/Profile"),array('ajax' => 'true',"class"=>"form-signin"),array("token"=>$this->user->token));}	?>
+      <?php if(!empty($this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){ echo form_open(base_url("ApiRest/Push/Profile"),array('ajax' => 'true',"class"=>"form-signin"),array("token"=>@$this->user->token));}	?>
         <div class="row p-5">
           <div class="col-12 col-sm-8 text-white bg-titles p-3" >
           <?php
-            if(!empty($this->user) && strtolower($this->user->login)==strtolower($this->uri->segment(2))){
+            if(!empty($this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){
           ?>
             <div class="btn-edit btn-tooltip toggle" data-form="true" data-toggle="tooltip" data-placement="right"   title="Editar Información Personal">
               <i class="fas fa-edit fa-2x text-white toggle"></i>
@@ -53,7 +62,7 @@
             <span class="toggle hide">
               <div class="input-group mb-3">
                 <div class="input-group-prepend">
-                  <span class="input-group-text string_telefono" id="basic-addon2">Teléfono</span>
+                  <span class="input-group-text" id="basic-addon2">Teléfono</span>
                 </div>
                 <?php echo set_input("telefono",@$this->profile->telefono,'Teléfono',true);?>
               </div>
@@ -104,13 +113,13 @@
             </span>
             <ul class="list toggle">
               <li>
-                <span class="toggle p-3"><?php echo (isset($this->profile->telefono))?$this->profile->telefono:"0414-0000000";?></span>
+                <span class="toggle p-3 string_telefono"><?php echo (isset($this->profile->telefono))?$this->profile->telefono:"0414-0000000";?></span>
               </li>
               <li>
-                <span class="toggle p-3"><?php echo (isset($json->email))?$json->email:"email@suwebsite.com";?></span>
+                <span class="toggle p-3 string_email"><?php echo (isset($json->email))?$json->email:"email@suwebsite.com";?></span>
               </li>
               <li>
-                <span class="toggle p-3"><?php echo (isset($json->website))?$json->website:"suwebsite.com";?></span>
+                <span class="toggle p-3 string_website"><?php echo (isset($json->website))?$json->website:"suwebsite.com";?></span>
               </li>
             </ul>
             <div class="toggle hide">
@@ -121,14 +130,14 @@
             </div>
           </div>
         </div>
-      <?php if(!empty($this->user) && strtolower($this->user->login)==strtolower($this->uri->segment(2))){ echo form_close();}?>
+      <?php if(!empty($this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){ echo form_close();}?>
       <div class="row text-center">
         <div class="col">
           <div class="image-profile">
             <div class="row justify-content-md-center" >
               <div class="col-3" id="btnavatar" data-bg=".bg_portada">
                 <?php
-                  if(!empty($this->user) && strtolower($this->user->login)==strtolower($this->uri->segment(2))){
+                  if(!empty($this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){
                 ?>
                     <div id="cropContainerMinimal2"></div>
                     <div class="btn-edit btn-tooltip" id="custom-btn2"  data-toggle="tooltip" data-placement="right"  title="Editar Avatar">
@@ -145,13 +154,19 @@
 
             <div class="row justify-content-md-center mt-3">
                 <div class="col-1">
-                  <i class="fab fa-facebook fa-3x"></i>
+                  <a target="_blank" <?php if(isset($json->facebook)){?> href="<?php echo 'https://facebook.com/'.$json->facebook;?>" <?php }?> class="url_facebook">
+                    <i class="fab fa-facebook fa-3x"></i>
+                  </a>
                 </div>
                 <div class="col-1">
-                  <i class="fab fa-twitter fa-3x"></i>
+                  <a target="_blank" <?php if(isset($json->twitter)){?> href="<?php echo 'https://twitter.com/'.$json->twitter;?>" <?php }?> class="url_twitter">
+                    <i class="fab fa-twitter fa-3x"></i>
+                  </a>
                 </div>
                 <div class="col-1">
-                  <i class="fab fa-instagram fa-3x"></i>
+                  <a target="_blank" <?php if(isset($json->instagram)){?> href="<?php echo 'https://instagram.com/'.$json->instagram;?>" <?php }?> class="url_instagram">
+                    <i class="fab fa-instagram fa-3x"></i>
+                  </a>
                 </div>
             </div>
           </div>
@@ -170,7 +185,7 @@
       </h1>
       <h2>Destacados</h2>
       <?php
-        if(!empty($this->user) && strtolower($this->user->login)==strtolower($this->uri->segment(2))){
+        if(!empty(@$this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){
       ?>
           <a href="<?php echo base_url("Gestion/Inmuebles/Add/0/Iframe")?>" class="btn-edit btn-tooltip" data-toggle="tooltip" data-placement="right"  title="Agregar nuevo inmueble">
             <i class="fas fa-plus fa-2x text-secondary"></i>
@@ -317,8 +332,8 @@
 var croppicContaineroutputMinimal = {
     imgBG:".bg_portada",
     customUploadButtonId:'custom-btn',
-    uploadUrl:'<?php echo base_url("ApiRest/Upload/ImagesUp?folder=".$this->user->usuario_id."&name=portada")?>',
-    cropUrl:'<?php echo base_url("ApiRest/Upload/ImagesCrop?folder=".$this->user->usuario_id."&name=portada")?>',
+    uploadUrl:'<?php echo base_url("ApiRest/Upload/ImagesUp?folder=".@$this->user->usuario_id."&name=portada")?>',
+    cropUrl:'<?php echo base_url("ApiRest/Upload/ImagesCrop?folder=".@$this->user->usuario_id."&name=portada")?>',
     modal:false,
     doubleZoomControls:false,
     rotateControls: false,
@@ -338,8 +353,8 @@ var cropContaineroutput = new Croppic('cropContainerMinimal', croppicContainerou
 var croppicContaineroutputMinimal2 = {
     imgSrcChange:"#avatar",
     customUploadButtonId:'custom-btn2',
-    uploadUrl:'<?php echo base_url("ApiRest/Upload/ImagesUp?folder=".$this->user->usuario_id."&name=avatar")?>',
-    cropUrl:'<?php echo base_url("ApiRest/Upload/ImagesCrop?folder=".$this->user->usuario_id."&name=avatar")?>',
+    uploadUrl:'<?php echo base_url("ApiRest/Upload/ImagesUp?folder=".@$this->user->usuario_id."&name=avatar&cuadrar=avatar")?>',
+    cropUrl:'<?php echo base_url("ApiRest/Upload/ImagesCrop?folder=".@$this->user->usuario_id."&name=avatar&cuadrar=avatar")?>',
     modal:false,
     doubleZoomControls:false,
     rotateControls: false,
@@ -358,9 +373,22 @@ var cropContaineroutput2 = new Croppic('cropContainerMinimal2', croppicContainer
 function toggle(data){
   variable =  $.parseJSON(JSON.stringify(data));
   $.each(variable,function(k,v){
-    console.log(v)
-    console.log(k)
-    $(".string_"+k).html(v);
+    if(k=="json"){
+      $.each($.parseJSON(v),function(k2,v2){
+        $(".string_"+k2).html(v2);
+        if(k2=="facebook"){
+          $(".url_facebook").attr("href","https://facebook.com/"+v2);
+        }
+        if(k2=="twitter"){
+          $(".url_twitter").attr("href","https://twitter.com/"+v2);
+        }
+        if(k2=="instagram"){
+          $(".url_instagram").attr("href","https://instagram.com/"+v2);
+        }
+      })
+    }else{
+      $(".string_"+k).html(v);
+    }
   })
   $(".active").find(".toggle").toggle();
 }

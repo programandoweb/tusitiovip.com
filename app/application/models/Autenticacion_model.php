@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-/**
+/*
   DESARROLLADO POR JORGE MENDEZ
   programandoweb.net
   info@programandoweb.net
@@ -37,7 +37,6 @@ class Autenticacion_model extends CI_Model {
 											->get()->row();
 		if(!empty($data)){
 			if($data->password==md5(@$var['password'])){
-
 				if($data->estatus==0){
 					return array("error"=>"Esta cuenta se encuentra inactiva, consulte con el administrador");
 					return;
@@ -103,7 +102,7 @@ class Autenticacion_model extends CI_Model {
 		}
 	}
 
-	public function set_user($var,$me=FALSE){
+	public function set_user($var,$me=FALSE,$refresh=false){
 		if(isset($var['redirect'])){
 			unset($var["redirect"]);
 			unset($var["from_registro"]);
@@ -113,6 +112,9 @@ class Autenticacion_model extends CI_Model {
 		}
 		if(isset($var['id'])){
 			$var['password']	=	md5($var['password']);
+		}
+		if($refresh){
+			unset($var['token']);
 		}
 		if(!isset($var['id']) && !isset($var['token'])){
 			$var['password']	=	$var['token']	=	md5(date("Y-m-d H:i:s"));

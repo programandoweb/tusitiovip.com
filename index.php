@@ -98,7 +98,7 @@ switch (ENVIRONMENT)
 */
 
 if($_SERVER['HTTP_HOST'] == "localhost"){
-	$dominio		=		'http://' . $_SERVER['HTTP_HOST'].'/tusitiovip.com/ApiRest';
+	$dominio		=		'http://' . $_SERVER['HTTP_HOST'].'/tusitiovip.com';
 }
 else{
 	$dominio		=		'https://' . $_SERVER['HTTP_HOST'];

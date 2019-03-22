@@ -46,11 +46,7 @@
 							<td class="text-right"><b><?php echo $this->cant_inmuebles;?></b></td>
 						</tr>
 						<tr>
-							<td>Visitas Anónimas:</td>
-							<td class="text-right"><b>300</b></td>
-						</tr>
-						<tr>
-							<td>Visitas registrados:</td>
+							<td>Visitas:</td>
 							<td class="text-right"><b>300</b></td>
 						</tr>
 						<tr>

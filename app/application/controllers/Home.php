@@ -52,19 +52,19 @@ class Home extends CI_Controller {
 	public function Inmueble(){
 		list($prefijo,$id,$slug) 	=	explode("-",$this->uri->segment(3));
 		$inmueble								=		$this->Home->getInmueble($id);
-		$this->profile					=		usuarios_x_id($inmueble->usuario_id);
+		$this->profile					=		usuarios_x_id($inmueble["inmueble"]->usuario_id);
 		$images									=		get_imagesInmuebles($id,"*",false,false,"img-fluid");
 		$set_image							=		"";
 		if(!empty($images)){
 				$set_image =	$images[0];
 		}
-		$this->Breadcrumb 			=		GetTipoInmueble($inmueble->tipo_inmueble).' en '.GetTipoAccion($inmueble->accion_id);
+		$this->Breadcrumb 			=		GetTipoInmueble($inmueble["inmueble"]->tipo_inmueble).' en '.GetTipoAccion($inmueble["inmueble"]->accion_id);
 		$this->Breadcrumb_bool 	=		false;
 		$this->util->set_title($this->Breadcrumb." - ".SEO_TITLE);
-		$this->util->set_description($inmueble->descripcion);
+		$this->util->set_description($inmueble["inmueble"]->descripcion);
 		$this->util->set_image($set_image);
-		View($this->ModuloActivo."/Inmueble",array(	"inmueble"=>$inmueble,
-																								"caracteristicas"=>$inmueble->descripcion,
+		View($this->ModuloActivo."/Inmueble",array(	"inmueble"=>$inmueble["inmueble"],
+																								"caracteristicas_db"=>$inmueble["caracteristicas"],
 																								"images"=>$images));
 	}
 

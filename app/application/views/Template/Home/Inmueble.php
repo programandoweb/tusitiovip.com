@@ -181,8 +181,8 @@
             if($inmueble->id){
             $folder	= 	'uploads/inmuebles/'.$inmueble->id;
             $map 		= 	directory($folder);
-              if(!empty($map)){
-                foreach ($map  as $key => $value) {
+              if(!empty($map["html"])){
+                foreach ($map["html"]  as $key => $value) {
           ?>
                   <div class="col-12 col-sm-6">
                     <img src="<?php echo $value?>" class="img-thumbnail" alt=""/>
@@ -194,6 +194,55 @@
           ?>
         </div>
       </div>
+    </div>
+    <div class="row">
+      <?php
+        //pre($caracteristicas_db);
+        $caracteristicas		=		GetCaracteristicas();
+      ?>
+      <div class="col-12">
+        <h3>Características</h3>
+        <?php if(count($caracteristicas["On-Site"])>0){?>
+          <h5>En el sitio</h5>
+        <?php }?>
+      </div>
+    </div>
+    <div class="row pb-3">
+      <?php
+        foreach($caracteristicas["On-Site"] as $key => $value) {
+          if(isset($caracteristicas_db[$value->id])){
+      ?>
+            <div class="col-3 text-secondary m-1">
+              <div class="input-group-text p-2 text-white">
+                <i class="fas fa-check ml-2 mr-1"></i> <?php print($value->caracteristica);?>
+              </div>
+            </div>
+      <?php
+          }
+        }
+      ?>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <?php if(count($caracteristicas["Nearby"])>0){?>
+          <h5>Alrededor</h5>
+        <?php }?>
+      </div>
+    </div>
+    <div class="row pb-3">
+      <?php
+        foreach($caracteristicas["Nearby"] as $key => $value) {
+          if(isset($caracteristicas_db[$value->id])){
+      ?>
+            <div class="col text-secondary">
+              <div class="input-group-text p-2 text-white">
+                <i class="fas fa-check ml-2 mr-1"></i> <?php print($value->caracteristica);?>
+              </div>
+            </div>
+      <?php
+          }
+        }
+      ?>
     </div>
   </div>
 </section>

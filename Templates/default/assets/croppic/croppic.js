@@ -303,12 +303,18 @@
 
 								//console.log($(that.options.imgBG))
 
+								/*
+									MODIFICADO POR PROGRAMANDOWEB
+									that.cropControlsCrop.hide();
+								*/
+
 								if(that.options.imgBG){
 									$(that.options.imgBG).css("background-image","url(" + response.url + ")");
 								}else if(that.options.imgSrcChange){
 									$(that.options.imgSrcChange).attr("src",response.url);
 								}
 
+								that.reset();
 								that.hideLoader();
 
                 if (that.options.modal) { that.createModal(); }

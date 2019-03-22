@@ -113,9 +113,25 @@ class Home_model extends CI_Model {
 	}
 
 	public function getInmueble($id,$campos="*"){
-		$this->db->select($campos)->from(DB_PREFIJO."anuncio");
+		$tabla	=	DB_PREFIJO."anuncio";
+		$this->db->select('*');
+		$this->db->from($tabla);
 		$this->db->where("id",$id);
-		return $this->db->get()->row();
+		if($this->user->tipo_id>0){
+			$this->db->where("usuario_id",$this->user->usuario_id);
+		}
+		$query	=	$this->db->get();
+		$caracteristicas=$this->db->select('*')->from(DB_PREFIJO."anuncio_caracteristicas")->where("anuncio_id",$id)->get()->result();
+		$return	=	array();
+		foreach ($caracteristicas as $key => $value) {
+			$return[$value->caracteristica_id]	=	$value;
+		}
+		return array("inmueble"=>$query->row(),"caracteristicas"=>$return);
+
+
+		// $this->db->select($campos)->from(DB_PREFIJO."anuncio");
+		// $this->db->where("id",$id);
+		// return $this->db->get()->row();
 	}
 
 	public function getCaracteristicas($id){

@@ -184,3 +184,9 @@ ul.list{
 	height: 0.1px;
 	position: absolute;
 }
+.btn-fixed{
+	position: fixed;
+	z-index: 100;
+	right: 0;
+	top: 0;
+}

@@ -45,13 +45,20 @@ class Gestion_model extends CI_Model {
 		$this->db->from($tabla);
 		$this->db->where("id",$id);
 		if($this->user->tipo_id>0){
-			//$this->db->where("usuario_id",$this->user->usuario_id);
+			$this->db->where("usuario_id",$this->user->usuario_id);
 		}
 		$query	=	$this->db->get();
-		return $query->row();
+		$caracteristicas=$this->db->select('*')->from(DB_PREFIJO."anuncio_caracteristicas")->where("anuncio_id",$id)->get()->result();
+		$return	=	array();
+		foreach ($caracteristicas as $key => $value) {
+			$return[$value->caracteristica_id]	=	$value;
+		}
+		return array("inmueble"=>$query->row(),"caracteristicas"=>$return);
 	}
 
 	public function SetInmuebles($var){
+		$caracteristica=$var["caracteristica"];
+		unset($var["caracteristica"]);
 		if(isset($var["callback"])){
 			unset($var["callback"]);
 		}
@@ -74,16 +81,21 @@ class Gestion_model extends CI_Model {
 				$return=true;
 			}
 		}
+		$this->db->where("anuncio_id",$this->return->id)->delete(DB_PREFIJO."anuncio_caracteristicas");
+		foreach ($caracteristica as $key => $value) {
+			$this->db->insert(DB_PREFIJO."anuncio_caracteristicas",array("anuncio_id"=>$this->return->id,"caracteristica_id"=>$value));
+		}
+		$config	=	array(	"allowed_types"=>'gif|jpg|png',
+											"max_size"=>12000,
+											"max_width"=>12000,
+											"max_height"=>12000,
+											"max_size_avaible"=>350,
+											"max_width_avaible"=>800,
+											"max_height_avaible"=>480);
 
 		upload_multiple(	$_FILES["userfile"],
 											$path='images/uploads/inmuebles/'.$insert_id,
-											$config=array(	"allowed_types"=>'gif|jpg|png',
-																			"max_size"=>2048,
-																			"max_width"=>2048,
-																			"max_height"=>2048));
-
-
-
+											$config);
 		return $return;
 	}
 

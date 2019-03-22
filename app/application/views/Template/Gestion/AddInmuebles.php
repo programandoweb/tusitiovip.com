@@ -5,7 +5,9 @@
 	LCDO. JORGE MENDEZ
 	info@programandoweb.net
 */
-$row=$data;
+$row=	$data["inmueble"];
+$caracteristicas_db	=	$data["caracteristicas"];
+//pre($data);
 
 ?>
 <?php echo form_open_multipart(current_url(),array('ajaxi' => 'true',"class"=>"form-signin"),array("id"=>$this->uri->segment(4)));	?>
@@ -25,6 +27,11 @@ $row=$data;
 					<div class="row">
 						<div class="col">
 							<?php echo set_input("titulo",@$row->titulo,$placeholder='Título del Inmueble',true,'text-secondary',array());?>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col">
+							<?php echo set_input("codigo_manual",@$row->codigo_manual,$placeholder='Código manual',false,'text-secondary',array());?>
 						</div>
 					</div>
 					<div class="row mt-3">
@@ -51,7 +58,6 @@ $row=$data;
 							</div>
 						</div>
 					</div>
-
 					<div class="row mb-3">
 						<div class="col">
 							<?php echo set_input("direccion",@$row->direccion,$placeholder='Dirección',true,' text-secondary ',array("id"=>"direccion"));?>
@@ -130,15 +136,59 @@ $row=$data;
 							if($this->uri->segment(4)){
 							$folder	= 	'uploads/inmuebles/'.@$row->id;
 							$map 		= 	directory($folder);
-								if(!empty($map)){
-									foreach ($map  as $key => $value) {
+								if(!empty($map["html"])){
+									foreach ($map["html"]  as $key => $value) {
 						?>
-										<div class="col-3">
+										<div class="col-3 text-center">
 											<img src="<?php echo $value?>" class="img-thumbnail" alt=""/>
-										</div>
+											<a  confirm='true' data-message="¿Desea eliminar?"  href="<?php echo base_url("ApiRest/Delete/Image?redirect=".base64_encode(base_url("Gestion/Inmuebles/Add/".$this->uri->segment(4)))."&f=".base64_encode("inmuebles/".$row->id)."&fi=".base64_encode($map["data"][$key]));?>"><i class="fas fa-trash-alt mt-2"></i></div></a>
 						<?php
 									}
 								}
+							}
+						?>
+					</div>
+					<h3>Características</h3>
+					<div class="row">
+						<?php $caracteristicas		=		GetCaracteristicas();?>
+						<div class="col-12  mt-2 mb-2">
+							<h6 class="text-secondary input-group-text p-2 ">En el sitio</h6>
+						</div>
+						<?php
+							foreach($caracteristicas["On-Site"] as $key => $value) {
+						?>
+								<div class="col-6">
+									<label>
+										<input
+											<?php if(isset($caracteristicas_db[$value->id])){echo 'checked';};?>
+											type="checkbox"
+											name="caracteristica[]"
+											value="<?php print($value->id) ?>"/>
+										<?php print($value->caracteristica);?>
+									</label>
+								</div>
+						<?php
+							}
+						?>
+					</div>
+					<div class="row">
+						<div class="col-12 mt-2 mb-2">
+							<h6 class="text-secondary input-group-text p-2">En los alrededores</h6>
+						</div>
+						<?php
+							foreach($caracteristicas["Nearby"] as $key => $value) {
+						?>
+								<div class="col-6">
+									<label>
+										<input
+											<?php if(isset($caracteristicas_db[$value->id])){echo 'checked';};?>
+											type="checkbox"
+											name="caracteristica[]"
+											value="<?php print($value->id) ?>"/>
+										<?php print($value->caracteristica);?>
+									</label>
+								</div>
+						<?php
 							}
 						?>
 					</div>

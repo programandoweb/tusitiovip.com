@@ -7,6 +7,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	Colombia - Venezuela - Chile
 */
 
+function GetCaracteristicas(){
+	$ci 			=& 	get_instance();
+	$rows			=		$ci->db->select("*")
+										->from(DB_PREFIJO."caracteristicas t1")
+										->where("tipo","On-Site")
+										->get()->result();
+	$return1		=	$return2		=	array();
+	foreach ($rows as $key => $value) {
+		$return1[$value->id]		=		$value;
+	}
+	$rows			=		$ci->db->select("*")
+										->from(DB_PREFIJO."caracteristicas t1")
+										->where("tipo","Nearby")
+										->get()->result();
+	foreach ($rows as $key => $value) {
+		$return2[$value->id]		=		$value;
+	}
+	return array("On-Site"=>$return1,"Nearby"=>$return2);
+}
+
+
 function GetTipoAccion($id){
 	$ci 			=& 	get_instance();
 	return 	@$ci->db->select("nombre")
@@ -78,29 +99,53 @@ function get_imagesInmuebles($id,$tablas="*",$main=true,$html=true,$class="img-f
 function directory($folder){
 	$ci 	=& 	get_instance();
 	$ci->load->helper('directory');
-	$return = array();
+	$data=$return = array();
 	$map=directory_map(PATH_IMG.$folder);
-	foreach ($map as $key => $value) {
-		if($value!='index.html'){
-			$return[$key]		=		IMG.$folder.'/'.$value;
+	if(!empty($map)){
+		foreach ($map as $key => $value) {
+			if($value!='index.html'){
+				$return[$key]		=		IMG.$folder.'/'.$value;
+				$data[$key]			=		$value;
+			}
 		}
 	}
-	return $return;
+	return array("html"=>$return,"data"=>$data) ;
 }
 
 function get_portada($perfil_id){
-	$img_path	=	PATH_IMG.'uploads/'.$perfil_id.'/portada.jpg';
-	if(file_exists($img_path)){
-		return IMG.'uploads/'.$perfil_id.'/portada.jpg';
+	$ci 	=& 	get_instance();
+	$ci->load->helper('directory');
+	$map 			= 	directory_map(PATH_IMG.'uploads/'.$perfil_id.'/');
+	if(!empty($map)){
+		foreach ($map as $key => $value) {
+			$pos 		= 	strpos($value, "portada");
+			if ($pos !== false) {
+				$return 	=		IMG.'uploads/'.$perfil_id.'/'.$value;
+				break;
+			}else{
+				$return 	=		IMG."design/portada.jpg";
+			}
+		}
+		return $return;
 	}else{
-		return IMG."design/portada.jpg";
+	 	return IMG."design/portada.jpg";
 	}
 }
 
 function get_avatar($perfil_id){
-	$img_path	=	PATH_IMG.'uploads/'.$perfil_id.'/avatar.jpg';
-	if(file_exists($img_path)){
-		return IMG.'uploads/'.$perfil_id.'/avatar.jpg';
+	$ci 	=& 	get_instance();
+	$ci->load->helper('directory');
+	$map 			= 	directory_map(PATH_IMG.'uploads/'.$perfil_id.'/');
+	if(!empty($map)){
+		foreach ($map as $key => $value) {
+			$pos 		= 	strpos($value, "avatar");
+			if ($pos !== false) {
+				$return 	=		IMG.'uploads/'.$perfil_id.'/'.$value;
+			}else{
+				$return 	=		IMG."design/avatar.jpg";
+			}
+		}
+		return $return;
 	}else{
 		return IMG."design/avatar.jpg";
 	}
@@ -598,6 +643,9 @@ function upload($file='userfile',$path='images/uploads/',$config=array("allowed_
 		}
 		else{
 			$upload_data	=	$ci->upload->data();
+			if($upload_data["file_size"]>400){
+				redimesionar_imagen($upload_data["full_path"],$upload_data["full_path"],$config["max_width_avaible"],$config["max_height_avaible"],80);
+			}
 			$upload_data['imagen_nueva']	=	DOMINIO.'/'.$path.$nuevo_nombre.$upload_data['file_ext'];
 			rename($upload_data['full_path'],$upload_data['file_path'].$nuevo_nombre.$upload_data['file_ext']);
 			$upload_data['nuevo_nombre']	=	$nuevo_nombre.$upload_data['file_ext'];
@@ -634,6 +682,9 @@ function upload_multiple($file='userfile',$path='images/uploads/',$config=array(
 			}
 			else{
 				$upload_data									=		$ci->upload->data();
+				if($upload_data["file_size"]>400){
+					redimesionar_imagen($upload_data["full_path"],$upload_data["full_path"],$config["max_width_avaible"],$config["max_height_avaible"],80);
+				}
 				$upload_data['imagen_nueva']	=		DOMINIO.'/'.$path.$nuevo_nombre.$upload_data['file_ext'];
 				rename($upload_data['full_path'],	$upload_data['file_path'].$nuevo_nombre.$upload_data['file_ext']);
 				$upload_data['nuevo_nombre']	=		$nuevo_nombre.$upload_data['file_ext'];
@@ -643,6 +694,110 @@ function upload_multiple($file='userfile',$path='images/uploads/',$config=array(
 		}
 	}
 	return $returns;
+}
+
+function resizeImage($path,$original_image_data, $original_width, $original_height, $new_width, $new_height,$reset=false){
+	$datos						=		getimagesize($original_image_data);
+	if($datos[0]>$datos[1]){
+		$newWidth			= 	($datos[0] * $new_width) / $datos[1];
+		$newHeight		=		$new_width;
+	}else{
+		$newWidth			= 	$new_width;
+		$newHeight		=		($datos[1] * $new_width) / $datos[0];
+	}
+	//redimesionar_imagen($original_image_data,$original_image_data,$newWidth,$newHeight,80);
+	$image_p 				= 	imagecreatetruecolor($new_width, $new_height);
+	if($datos[2]==1){
+		$image 				= 	imagecreatefromgif($original_image_data);
+	}
+	if($datos[2]==2){
+		$image 		= 	imagecreatefromjpeg($original_image_data);
+	}
+	if($datos[2]==3){
+		$image 		= 	imagecreatefrompng($original_image_data);
+	}
+	imagecopyresampled($image_p, $image, 0, 0, 0, 0, $newWidth, $newHeight, $datos[0], $datos[1]);
+
+	if($reset){
+		$ci 	=& 	get_instance();
+		$ci->load->helper('directory');
+		$map 			= 	directory_map($path);
+		foreach ($map as $key => $value) {
+			$pos 		= 	strpos($value, $reset);
+			if ($pos !== false) {
+				if($path.$value!=$original_image_data){
+					unlink($path.$value);
+				}
+			}
+		}
+	}
+
+	if($datos[2]==1){
+		$img=imagegif($image_p,$original_image_data);
+	}
+	if($datos[2]==2){
+		$img=imagejpeg($image_p,$original_image_data);
+	}
+	if($datos[2]==3){
+		$img=imagepng($image_p,$original_image_data);
+	}
+	return;
+}
+
+function redimesionar_imagen($origin,$destino,$newWidth,$newHeight,$jpgQuality=100,$reset=false){
+// getimagesize devuelve un array con: anchura,altura,tipo,cadena de
+	// texto con el valor correcto height="yyy" width="xxx"
+	$datos=getimagesize($origin);
+	// comprobamos que la imagen sea superior a los tamaños de la nueva imagen
+	if($datos[0]>$newWidth || $datos[1]>$newHeight){
+
+		$newHeight	= 	($newWidth * $datos[1]) / $datos[0];
+	// creamos una nueva imagen desde el original dependiendo del tipo
+		if($datos[2]==1)
+			$img=imagecreatefromgif($origin);
+		if($datos[2]==2)
+			$img=imagecreatefromjpeg($origin);
+		if($datos[2]==3)
+			$img=imagecreatefrompng($origin);
+		// Redimensionamos proporcionalmente
+		if(rad2deg(atan($datos[0]/$datos[1]))>rad2deg(atan($newWidth/$newHeight))){
+			$anchura=$newWidth;
+			$altura=round(($datos[1]*$newWidth)/$datos[0]);
+		}else{
+			$altura=$newHeight;
+			$anchura=round(($datos[0]*$newHeight)/$datos[1]);
+		}
+
+		if($reset){
+			$ci 	=& 	get_instance();
+			$ci->load->helper('directory');
+			$map 			= 	directory_map($path);
+			foreach ($map as $key => $value) {
+				$pos 		= 	strpos($value, $reset);
+				if ($pos !== false) {
+					if($path.$value!=$original_image_data){
+						unlink($path.$value);
+					}
+				}
+			}
+		}
+		// creamos la imagen nueva
+		$newImage = imagecreatetruecolor($anchura,$altura);
+		// redimensiona la imagen original copiandola en la imagen
+		imagecopyresampled($newImage, $img, 0, 0, 0, 0, $anchura, $altura, $datos[0], $datos[1]);
+		// guardar la nueva imagen redimensionada donde indicia $destino
+		if($datos[2]==1)
+			imagegif($newImage,$destino);
+		if($datos[2]==2)
+			imagejpeg($newImage,$destino,$jpgQuality);
+		if($datos[2]==3)
+			imagepng($newImage,$destino);
+		// eliminamos la imagen temporal
+
+		imagedestroy($newImage);
+		return true;
+	}
+	return false;
 }
 
 function usuarios_x_id($id){
