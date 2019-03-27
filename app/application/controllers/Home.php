@@ -63,7 +63,8 @@ class Home extends CI_Controller {
 		$this->util->set_title($this->Breadcrumb." - ".SEO_TITLE);
 		$this->util->set_description($inmueble["inmueble"]->descripcion);
 		$this->util->set_image($set_image);
-		View($this->ModuloActivo."/Inmueble",array(	"inmueble"=>$inmueble["inmueble"],
+		View($this->ModuloActivo."/Inmueble",array(	"menu"=>100,
+																								"inmueble"=>$inmueble["inmueble"],
 																								"caracteristicas_db"=>$inmueble["caracteristicas"],
 																								"images"=>$images));
 	}

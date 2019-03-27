@@ -33,7 +33,7 @@ class Gestion_model extends CI_Model {
 
 		$tabla	=	DB_PREFIJO."anuncio";
 		$this->db->select("SQL_CALC_FOUND_ROWS id", FALSE)
-							->select('id,titulo,precio,estatus,"prueba" as edit')->from($tabla);
+							->select('id,titulo,precio,estatus,accion_id,tipo_inmueble,"prueba" as edit')->from($tabla);
 
 		if(empty(get("estatus"))){
 				$this->db->where("estatus<",9);
@@ -97,6 +97,7 @@ class Gestion_model extends CI_Model {
 		}else{
 			$this->db->where("id",$var["id"]);
 			$insert_id = $var["id"];
+			unset($var["redirect"]);
 			if($this->db->update(DB_PREFIJO."anuncio",$var)){
 				$this->return->id		=		$var["id"];
 				$return=true;

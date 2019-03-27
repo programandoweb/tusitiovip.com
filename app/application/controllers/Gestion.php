@@ -118,7 +118,11 @@ class Gestion extends CI_Controller {
         }
         //pre($this->Gestion->return->id);       return;
         $this->session->set_flashdata('success', 'Datos Guardados');
-        redirect("Gestion/Inmuebles/Add/".$this->Gestion->return->id);
+        if(post("redirect")){
+          redirect(post("redirect"));
+        }else{
+          redirect("Gestion/Inmuebles/Add/".$this->Gestion->return->id);
+        }
 			}else{
         $this->session->set_flashdata('danger', 'No pudo guardar los datos.');
         redirect("Gestion/Inmuebles/Add/".$this->Gestion->return->id);

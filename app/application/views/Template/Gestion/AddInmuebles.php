@@ -11,7 +11,7 @@ $caracteristicas_db		=		$data["caracteristicas"];
 ?>
 
 <?php
-	if(empty($row)){?>
+	if(empty($row) && $this->uri->segment(4)){?>
 		<div class="container">
 			<div class="card p-5">
 				<div class="row justify-content-md-center">
@@ -27,14 +27,14 @@ $caracteristicas_db		=		$data["caracteristicas"];
 ?>
 
 <?php $caracteristicas		=		GetCaracteristicas();?>
-<?php echo form_open_multipart(current_url(),array('ajaxi' => 'true',"class"=>"form-signin"),array("id"=>$this->uri->segment(4)));	?>
+<?php echo form_open_multipart(current_url(),array('ajaxi' => 'true',"class"=>"form-signin"),array("id"=>$this->uri->segment(4),"redirect"=>"apanel"));	?>
 	<div class="container">
 		<div class="card p-5">
 			<div class="row mb-3 justify-content-md-center">
 				<div class="col-6 h6">
 					<div class="btn-group btn-block" role="group" aria-label="Basic example">
 						<button type="submit" class="btn btn-secondary"><i class="fas fa-upload"></i> Publicar</button>
-						<a href="<?php echo base_url("Gestion/Inmuebles")?>" class="btn btn-danger"><i class="fas fa-ban mr-2"></i> Cancelar</a>
+						<a href="<?php echo base_url("apanel")?>" class="btn btn-danger"><i class="fas fa-ban mr-2"></i> Cancelar</a>
 						<a target="_blank" href="<?php echo base_url(GetTipoAccion(@$row->accion_id)."/".GetTipoInmueble(@$row->tipo_inmueble)."/PGRW-".@$row->id."-".url_title(@$row->titulo))?>" class="btn btn-secondary <?php echo (!isset($row->id))?'disabled':''?>"><i class="fas fa-search mr-2"></i> Ver</a>
 					</div>
 				</div>

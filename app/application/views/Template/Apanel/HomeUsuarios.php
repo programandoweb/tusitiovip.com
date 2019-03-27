@@ -1,10 +1,11 @@
+<?php $image_avatar   = get_avatar($this->user->usuario_id);?>
 <div class="container">
 	<div class="row justify-content-md-center">
     <div class="col-12 col-md-3">
 			<div class="card testimonial-card">
 				<div class="card-up indigo lighten-1"></div>
 				<div class="avatar mx-auto white mt-4">
-					<img style="width:120px;height:120px;" src="<?php echo IMG."design/avatar.jpg"?>" class="rounded-circle" alt="<?php #echo $value->name?>">
+					<img id="avatar" src="<?php echo $image_avatar?>" class="rounded-circle" alt="..." style="width:120px;">
 				</div>
 				<div class="card-body">
 					<h6 class="text-center">TusitioVip.com</h6>
@@ -78,13 +79,17 @@
 							</th>
 						</thead>
 						<tbody>
-							<?php foreach ($this->Listado as $key => $value) {?>
+							<?php
+								foreach ($this->Listado["data"] as $key => $value) {?>
 								<tr>
 									<td><?php print($value["titulo"])?></td>
 									<td><?php print($value["precio"])?></td>
 									<td class="text-right">
 										<a class="btnbtn-primary" href="<?php echo base_url("Gestion/Inmuebles/Add/".$value["id"]."/Iframe")?>">
-											Edit
+											<i class="fas fa-edit"></i>
+										</a>
+										<a target="_blank" href="<?php echo base_url(GetTipoAccion($value["accion_id"])."/".GetTipoInmueble($value["tipo_inmueble"])."/PGRW-".$value["id"]."-".url_title($value["titulo"]))?>" class=" <?php echo (!isset($value["id"]))?'disabled':''?>">
+											<i class="fas fa-search mr-2"></i>
 										</a>
 									</td>
 								</tr>

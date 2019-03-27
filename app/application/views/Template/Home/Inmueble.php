@@ -5,7 +5,26 @@
   $json           = json_decode($this->profile->json);
   $json_inmueble  = json_decode($inmueble->json);
 ?>
-<section class="slider mb-5 pb-0 shadow">
+<nav class="navbar navbar-expand-md bg-light text-black">
+  <div class="container">
+    <button class="navbar-toggler collapsed text-secondary" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-ellipsis-v"></i>
+    </button>
+    <div class="navbar-collapse collapse" id="navbarsExampleDefault" style="">
+      <ul class="navbar-nav mr-auto">
+				<li class="nav-item active">
+          <a class="nav-link h2" href="<?php echo base_url(isset($this->profile->login)?"p/".$this->profile->login:'');?>"><?php echo (isset($this->profile->nombres) && isset($this->profile->apellidos))?$this->profile->nombres. ' '. $this->profile->apellidos :"Carlos";?></a>
+        </li>
+      </ul>
+			<ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <img id="avatar" src="<?php echo $image_avatar?>" class="rounded-circle" alt="..." style="width:50px;">
+				</li>
+			</ul>
+    </div>
+  </div>
+</nav>
+<!--section class="slider mb-5 pb-0 shadow">
   <div class="jumbotron top shadow relative bg_portada" style="background-image:url(<?php echo $image_portada?>);">
     <?php
       if(!empty($this->user) && strtolower($this->user->login)==strtolower($this->uri->segment(2))){
@@ -160,12 +179,12 @@
       </div>
     </div>
   </div>
-</section>
-<div class="super-separador"></div>
-<div class="super-separador"></div>
+</section-->
+<!--div class="super-separador"></div>
+<div class="super-separador"></div-->
 <section class="bg-white pb-5">
-  <div class="container shadow" style="background:#ddd;">
-    <div class="text-left p-5 relative">
+  <div class="container">
+    <div class="text-left p-3 relative">
       <?php #pre($inmueble);?>
     </div>
     <div class="row text-left">
@@ -269,84 +288,3 @@
     </div>
   </div>
 </section>
-
-<section class="bg-green mt-5 shadow">
-  <div class="container ">
-    <h1 class="font-secundary p-5">
-      Redes Sociales
-    </h1>
-    <div class="row pb-5">
-      <div class="col-12 col-sm-4 ">
-        <div class="redes-timeline">
-          <i class="fab fa-facebook fa-5x"></i>
-          <p>facebook</p>
-        </div>
-      </div>
-      <div class="col-12 col-sm-4 ">
-        <div class="redes-timeline">
-          <i class="fab fa-twitter fa-5x"></i>
-          <p>twitter</p>
-        </div>
-      </div>
-      <div class="col-12 col-sm-4">
-        <div class="redes-timeline">
-          <i class="fab fa-instagram fa-5x"></i>
-          <p>instagram</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-<script>
-var croppicContaineroutputMinimal = {
-    imgBG:".bg_portada",
-    customUploadButtonId:'custom-btn',
-    uploadUrl:'<?php echo base_url("ApiRest/Upload/ImagesUp?folder=".$this->user->usuario_id."&name=portada")?>',
-    cropUrl:'<?php echo base_url("ApiRest/Upload/ImagesCrop?folder=".$this->user->usuario_id."&name=portada")?>',
-    modal:false,
-    doubleZoomControls:false,
-    rotateControls: false,
-    loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> ',
-    onBeforeImgUpload: function(){ console.log('onBeforeImgUpload') },
-    onAfterImgUpload: function(){ console.log('onAfterImgUpload') },
-    onImgDrag: function(){ console.log('onImgDrag') },
-    onImgZoom: function(){ console.log('onImgZoom') },
-    onBeforeImgCrop: function(){ console.log('onBeforeImgCrop') },
-    onAfterImgCrop:function(){ console.log('onAfterImgCrop') },
-    onReset:function(){ console.log('onReset') },
-    onError:function(errormessage){ console.log('onError:'+errormessage) }
-}
-var cropContaineroutput = new Croppic('cropContainerMinimal', croppicContaineroutputMinimal);
-
-
-var croppicContaineroutputMinimal2 = {
-    imgSrcChange:"#avatar",
-    customUploadButtonId:'custom-btn2',
-    uploadUrl:'<?php echo base_url("ApiRest/Upload/ImagesUp?folder=".$this->user->usuario_id."&name=avatar")?>',
-    cropUrl:'<?php echo base_url("ApiRest/Upload/ImagesCrop?folder=".$this->user->usuario_id."&name=avatar")?>',
-    modal:false,
-    doubleZoomControls:false,
-    rotateControls: false,
-    loaderHtml:'<div class="loader bubblingG"><span id="bubblingG_1"></span><span id="bubblingG_2"></span><span id="bubblingG_3"></span></div> ',
-    onBeforeImgUpload: function(){ console.log('onBeforeImgUpload') },
-    onAfterImgUpload: function(){ console.log('onAfterImgUpload') },
-    onImgDrag: function(){ console.log('onImgDrag') },
-    onImgZoom: function(){ console.log('onImgZoom') },
-    onBeforeImgCrop: function(){ console.log('onBeforeImgCrop') },
-    onAfterImgCrop:function(){ console.log('onAfterImgCrop') },
-    onReset:function(){ console.log('onReset') },
-    onError:function(errormessage){ console.log('onError:'+errormessage) }
-}
-var cropContaineroutput2 = new Croppic('cropContainerMinimal2', croppicContaineroutputMinimal2);
-
-function toggle(data){
-  variable =  $.parseJSON(JSON.stringify(data));
-  $.each(variable,function(k,v){
-    console.log(v)
-    console.log(k)
-    $(".string_"+k).html(v);
-  })
-  $(".active").find(".toggle").toggle();
-}
-
-</script>
