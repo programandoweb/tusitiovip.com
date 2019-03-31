@@ -49,6 +49,9 @@ $caracteristicas_db		=		$data["caracteristicas"];
 					<div class="row">
 						<div class="col">
 							<?php echo set_input("codigo_manual",@$row->codigo_manual,$placeholder='Código manual',false,'text-secondary',array());?>
+							<input type="hidden" id="municipio" name="municipio" />
+							<input type="hidden" id="ciudad" name="ciudad" />
+							<input type="hidden" id="casa" />
 						</div>
 					</div>
 					<div class="row mt-3">
@@ -77,7 +80,7 @@ $caracteristicas_db		=		$data["caracteristicas"];
 					</div>
 					<div class="row mb-3">
 						<div class="col">
-							<?php echo set_input("direccion",@$row->direccion,$placeholder='Dirección',true,' text-secondary ',array("id"=>"direccion"));?>
+							<?php echo set_input("direccion",@$row->direccion,$placeholder='Dirección',true,' text-secondary ',array("id"=>"direccion_map"));?>
 						</div>
 					</div>
 					<div class="row mb-3">
@@ -169,10 +172,14 @@ $caracteristicas_db		=		$data["caracteristicas"];
 							$map 		= 	directory($folder);
 								if(!empty($map["html"])){
 									foreach ($map["html"]  as $key => $value) {
+										$result = stripos($row->img_destacada,$map["data"][$key]);
 						?>
-										<div class="col-3 text-center">
+										<div class="col-3 text-center zoom destacar <?php if($result === false ){ echo '';}else{echo 'destacar-active';}?>" data-url="<?php echo base_url("ApiRest/Push/Destacar")?>" data-id="<?php echo @$row->id;?>" data-src="<?php echo $map["data"][$key];?>">
 											<img src="<?php echo $value?>" class="img-thumbnail" alt=""/>
-											<a  confirm='true' data-message="¿Desea eliminar?"  href="<?php echo base_url("ApiRest/Delete/Image?redirect=".base64_encode(base_url("Gestion/Inmuebles/Add/".$this->uri->segment(4)))."&f=".base64_encode("inmuebles/".$row->id)."&fi=".base64_encode($map["data"][$key]));?>"><i class="fas fa-trash-alt mt-2"></i></div></a>
+											<a  confirm='true' data-message="¿Desea eliminar?"  href="<?php echo base_url("ApiRest/Delete/Image?redirect=".base64_encode(base_url("Gestion/Inmuebles/Add/".$this->uri->segment(4)))."&f=".base64_encode("inmuebles/".$row->id)."&fi=".base64_encode($map["data"][$key]));?>">
+												<i class="fas fa-trash-alt mt-2"></i>
+											</a>
+										</div>
 						<?php
 									}
 								}
@@ -230,6 +237,13 @@ $caracteristicas_db		=		$data["caracteristicas"];
 <?php echo form_close();?>
 <script>
 	$(document).ready(function(){
+		$(".destacar").click(function(){
+			$(".destacar").removeClass("destacar-active");
+			$(this).addClass("destacar-active");
+			$.post($(this).data("url"),{img:$(this).data("src"),id:$(this).data("id")},function(data){
+
+			},"json");
+		});
 		submit_via_ajax();
 		$("#inputGroupFile01").change(function() {
 			file	=		$(this).clone();

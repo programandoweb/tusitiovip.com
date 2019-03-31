@@ -185,6 +185,7 @@
       </h1>
       <h2>Destacados</h2>
       <?php
+        //pre($this->inmuebles);
         if(!empty(@$this->user) && strtolower(@$this->user->login)==strtolower($this->uri->segment(2))){
       ?>
           <a href="<?php echo base_url("Gestion/Inmuebles/Add/0/Iframe")?>" class="btn-edit btn-tooltip" data-toggle="tooltip" data-placement="right"  title="Agregar nuevo inmueble">
@@ -195,40 +196,48 @@
       ?>
     </div>
     <div class="row text-center">
-      <div class="col-12 col-sm-3 p-0 m-0 position-relative hover-link-effect">
-        <a class="text-white" href="#" >
-          <div class="position-absolute hover-link p-5">
-            <h2 class="">Casa</h2>
-            <h3>Valencia</h3>
-          </div>
-        </a>
-        <img class=" img-fluid" src="<?php echo IMG?>design/10.jpg" alt="Art Fit Center">
-      </div>
-      <div class="col-12 col-sm-3 p-0 m-0 position-relative hover-link-effect">
-        <a class="text-white" href="#" >
-          <div class="position-absolute hover-link p-5">
-            <h2 class="">Apartamento</h2>
-            <h3>Caracas</h3>
-          </div>
-        </a>
-        <img class=" img-fluid" src="<?php echo IMG?>design/07.jpg" alt="B2U Jeans">
-      </div><div class="col-12 col-sm-3 p-0 m-0 position-relative hover-link-effect">
-        <a class="text-white" href="#" >
-          <div class="position-absolute hover-link p-5">
-            <h2 class="">Apartamento</h2>
-            <h3>Barinas</h3>
-          </div>
-        </a>
-        <img class=" img-fluid" src="<?php echo IMG?>design/08.jpg" alt="Eventos Nueva Estación">
-      </div><div class="col-12 col-sm-3 p-0 m-0 position-relative hover-link-effect">
-        <a class="text-white" href="#" >
-          <div class="position-absolute hover-link p-5">
-              <h2 class="">Finca</h2>
-              <h3>Barinas</h3>
-          </div>
-        </a>
-        <img class=" img-fluid" src="<?php echo IMG?>design/09.jpg" alt="Dina diesel">
-      </div>
+      <?php
+        if(!empty($this->inmuebles) && count($this->inmuebles)>0){
+          switch(count($this->inmuebles)){
+            case 1:
+            case 2:
+              $num  = 6;
+            break;
+            case 3:
+              $num  = 4;
+            break;
+            case 4:
+              $num  = 3;
+            break;
+            default:
+              $num  = 3;
+            break;
+          }
+          foreach ($this->inmuebles as $key => $value) {
+            $ruta       = 'uploads/inmuebles/'.$value->id.'/';
+            $directorio = directory($ruta);
+            $image      =  IMG.'design/1000.jpg';
+            foreach ($directorio["data"] as $key2 => $value2) {
+              if($value2==$value->img_destacada){
+                $image  =  IMG.$ruta.$value->img_destacada;
+                break;
+              }
+            };
+
+      ?>
+            <div class="col-12 col-sm-<?php echo $num;?> p-0 m-0 position-relative hover-link-effect">
+              <a class="text-white" href="<?php echo base_url(GetTipoAccion($value->accion_id)."/".GetTipoInmueble($value->tipo_inmueble)."/PGRW-".$value->id."-".url_title($value->direccion))?>" >
+                <div class="position-absolute hover-link p-5">
+                  <h2 class=""><?php print(GetTipoInmueble($value->tipo_inmueble));?></h2>
+                  <h3><?php print($value->direccion);?></h3>
+                </div>
+              </a>
+              <img class=" img-fluid" src="<?php echo $image;?>" alt="Art Fit Center">
+            </div>
+      <?php
+          }
+        }
+      ?>
     </div>
   </div>
 </section>
@@ -309,20 +318,48 @@
     <div class="row pb-5">
       <div class="col-12 col-sm-4 ">
         <div class="redes-timeline">
-          <i class="fab fa-facebook fa-5x"></i>
-          <p>facebook</p>
+          <div id="fb-root"></div>
+          <script async defer crossorigin="anonymous" src="https://connect.facebook.net/es_LA/sdk.js#xfbml=1&version=v3.2&appId=1731187280515813&autoLogAppEvents=1"></script>
+          <div class="fb-page"
+                data-href="https://www.facebook.com/<?php echo (isset($json->facebook)?$json->facebook:"skygroupsolutions");?>/"
+                data-tabs="timeline"
+                data-width="450"
+                data-height="350"
+                data-small-header="false"
+                data-adapt-container-width="true"
+                data-hide-cover="false"
+                data-show-facepile="true">
+                <blockquote cite="https://www.facebook.com/<?php echo (isset($json->facebook)?$json->facebook:"skygroupsolutions");?>/" class="fb-xfbml-parse-ignore">
+                  <a href="https://www.facebook.com/<?php echo (isset($json->facebook)?$json->facebook:"skygroupsolutions");?>/"><?php echo (isset($json->facebook)?$json->facebook:"Skygroupsolutions");?></a>
+                </blockquote>
+          </div>
         </div>
       </div>
-      <div class="col-12 col-sm-4 ">
+      <!--div class="col-12 col-sm-4 ">
         <div class="redes-timeline">
           <i class="fab fa-twitter fa-5x"></i>
           <p>twitter</p>
         </div>
-      </div>
-      <div class="col-12 col-sm-4">
+      </div-->
+      <div class="col-12 col-sm-8">
         <div class="redes-timeline">
-          <i class="fab fa-instagram fa-5x"></i>
-          <p>instagram</p>
+          <link href="<?php echo TEMPLATE;?>/assets/instalink/instalink-2.1.10.min.css" rel="stylesheet">
+          <script src="<?php echo TEMPLATE;?>/assets/instalink/instalink-2.1.10.min.js"></script>
+          <div data-il
+               data-il-api="/instalink/api/"
+               data-il-username="<?php echo (isset($json->instagram)?$json->instagram:"skygroupsolutions");?>"
+               data-il-hashtag=""
+               data-il-lang="en"
+               data-il-show-heading="true"
+               data-il-scroll="true"
+               data-il-width="100%"
+               data-il-height="350px"
+               data-il-image-size="medium"
+               data-il-bg-color="#285989"
+               data-il-content-bg-color="#F8F8F8"
+               data-il-font-color="#FFFFFF"
+               data-il-ban="">
+          </div>
         </div>
       </div>
     </div>

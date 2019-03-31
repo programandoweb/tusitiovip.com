@@ -11,12 +11,12 @@
 					<?php echo form_open(base_url($this->uri->segment(1)."/inicio_sesion"),array('ajax' => 'true',"class"=>"form-signin"));	?>
             <div class="row mb-2">
               <div class="col">
-                <input type="text" id="email" name="email" class="form-control" placeholder="correo@electronico.com" require>
+                <input type="text" id="email" name="email" class="form-control text-white" placeholder="correo@electronico.com" require>
               </div>
             </div>
             <div class="row mb-2">
               <div class="col">
-						    <input type="password" id="password" name="password" class="form-control" placeholder="Contraseña" require>
+						    <input type="password" id="password" name="password" class="form-control text-white" placeholder="Contraseña" require>
               </div>
             </div>
 						<?php echo form_hidden('redirect',($this->agent->is_referral())?$this->agent->referrer():base_url("Apanel"));?>

@@ -40,9 +40,9 @@ class Home extends CI_Controller {
 
 	public function Routing(){
 		if($this->profile=$profile=$this->profile()){
-			$nombres		=		(!empty($profile->nombres) && !empty($profile->apellidos))?$profile->nombres.' '.$profile->apellidos .' VIP':" Nuevo VIP";
-			//pre($profile);return;
-			$this->Breadcrumb 		=	'Main';
+			$nombres					=		(!empty($profile->nombres) && !empty($profile->apellidos))?$profile->nombres.' '.$profile->apellidos .' VIP':" Nuevo VIP";
+			$this->inmuebles	=		$this->Home->getInmuebleXId($this->profile->usuario_id);
+			$this->Breadcrumb =	'Main';
 			$this->Breadcrumb_bool 	=	false;
 			$this->util->set_title("Promotor inmobiliario ".$nombres." - ".SEO_TITLE);
 			View3($this->ModuloActivo."/Profile");

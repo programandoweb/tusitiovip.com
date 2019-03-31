@@ -134,6 +134,15 @@ class Home_model extends CI_Model {
 		// return $this->db->get()->row();
 	}
 
+	public function getInmuebleXId($usuario_id,$limit=4){
+		$tabla	=	DB_PREFIJO."anuncio";
+		$this->db->select('*');
+		$this->db->from($tabla);
+		$this->db->where("usuario_id",$usuario_id);
+		$query	=	$this->db->get();
+		return $query->result();
+	}
+
 	public function getCaracteristicas($id){
 		$this->db->select("t2.*")
 			->from(DB_PREFIJO."inmuebles_caract t1")

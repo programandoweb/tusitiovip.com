@@ -43,6 +43,11 @@ class ApiRest extends CI_Controller {
 		redirect(base64_decode(get("redirect")));
 	}
 
+	private function Destacar(){
+		$this->db->where("id",post("id"));
+		$this->db->update(DB_PREFIJO."anuncio",array("img_destacada"=>post("img")));
+	}
+
 	private function Images(){
 		$imagen	=	upload('userfile',$path='images/uploads/'.$this->uri->segment(4).'/',$config=array("allowed_types"=>'gif|jpg|png',"renombrar"=>"PGRW_".rand(5000,600000),"max_size"=>12000,"max_width"=>12000,"max_height"=>12000));
 		echo json_encode(array(
