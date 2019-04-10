@@ -3,7 +3,6 @@ $(document).ready(function(){
 	remove_flash();
 	_confirm();
 	clonar();
-	table = DataTable();
 	lightbox();
 	sobrescribir();
 	btn_up_foto();

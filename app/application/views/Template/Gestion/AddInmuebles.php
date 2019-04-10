@@ -49,9 +49,6 @@ $caracteristicas_db		=		$data["caracteristicas"];
 					<div class="row">
 						<div class="col">
 							<?php echo set_input("codigo_manual",@$row->codigo_manual,$placeholder='Código manual',false,'text-secondary',array());?>
-							<input type="hidden" id="municipio" name="municipio" />
-							<input type="hidden" id="ciudad" name="ciudad" />
-							<input type="hidden" id="casa" />
 						</div>
 					</div>
 					<div class="row mt-3">
@@ -78,9 +75,71 @@ $caracteristicas_db		=		$data["caracteristicas"];
 							</div>
 						</div>
 					</div>
+					<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyASilt304sHIqv3IYyo_Chr04MVK5HrjsM&libraries=places&callback=initialize"  async defer></script>
+					<script type="text/javascript">
+	          var geocoder;
+	          var marker;
+	          var latLng;
+	          var latLng2;
+	          var map;
+	          function initialize(_xloa, _yloa) {
+	            geocoder = new google.maps.Geocoder();
+	            if(true){
+	              latLng = new google.maps.LatLng("10.1579312", "-67.99721039999997");
+	            } else{
+	              latLng = new google.maps.LatLng(_xloa, _yloa);
+	            }
+	            var input = document.getElementById('buscar_dir');
+	            var autocomplete = new google.maps.places.Autocomplete(input);
+              autocomplete.setComponentRestrictions({'country': ['ve']});
+							autocomplete.addListener('place_changed', function() {
+								var place = autocomplete.getPlace();
+			          if (!place.geometry) {
+			            // User entered the name of a Place that was not suggested and
+			            // pressed the Enter key, or the Place Details request failed.
+			            window.alert("No details available for input: '" + place.name + "'");
+			            return;
+			          }
+								if (place.geometry.viewport) {
+									codeAddress(place);
+								}
+							})
+
+	          }
+	          function codeAddress(place) {
+	            $("#buscar_dir").attr("readonly","readonly");
+	            var address = $("#buscar_dir").val();
+	              geocoder.geocode( { 'address': address}, function(results, status) {
+	              if (status == google.maps.GeocoderStatus.OK) {
+										$("#lat").val(place.geometry.location.lat());
+										$("#lng").val(place.geometry.location.lng());
+										geocodePosition(place.geometry.location);
+	              }else{
+	                  console.log(status)
+	              }
+	              $("#buscar_dir").removeAttr("readonly");
+	            });
+	          }
+	          function geocodePosition(pos) {
+						  geocoder.geocode({
+						    latLng: pos
+						  }, function(responses) {
+								$("#responses").html(JSON.stringify(responses))
+						  });
+						}
+						function _split(string){
+							var str = string;
+							var res = str.split(",");
+							//console.log(res);
+							return res;
+						}
+	        </script>
 					<div class="row mb-3">
 						<div class="col">
-							<?php echo set_input("direccion",@$row->direccion,$placeholder='Dirección',true,' text-secondary ',array("id"=>"direccion_map"));?>
+							<input name="lat" id="lat" type="hidden"  value="<?php echo @$row->lat;?>"/>
+							<input name="lng" id="lng" type="hidden"  value="<?php echo @$row->lng;?>"/>
+							<textarea id="responses" name="json2" style="display:none;"><?php echo @$row->json2;?></textarea>
+							<?php echo set_input("direccion",@$row->direccion,$placeholder='Dirección',true,' text-secondary ',array("id"=>"buscar_dir"));?>
 						</div>
 					</div>
 					<div class="row mb-3">
@@ -93,15 +152,19 @@ $caracteristicas_db		=		$data["caracteristicas"];
 					</div>
 					<div class="row mb-3">
 						<div class="col-3">
+							<i class="fas fa-bath fa-3x"></i>
 							<input type="number" name="json[banos]" value="<?php echo @$json->banos?>" id="" placeholder="Baños" class="form-control  text-secondary ">
 						</div>
 						<div class="col-3">
+							<i class="fas fa-bed fa-3x"></i>
 							<input type="number" name="json[cuartos]" value="<?php echo @$json->cuartos?>" id="" placeholder="Cuartos" class="form-control  text-secondary ">
 						</div>
 						<div class="col-3">
+							<i class="fas fa-car fa-3x"></i>
 							<input type="number" name="json[estacionamiento]" value="<?php echo @$json->estacionamiento?>" id="" placeholder="Estacionamiento" class="form-control  text-secondary ">
 						</div>
 						<div class="col-3">
+							<i class="fas fa-home fa-3x"></i>
 							<input type="number" name="json[metros]" value="<?php echo @$json->metros?>" id="" placeholder="M²" class="form-control  text-secondary ">
 						</div>
 					</div>

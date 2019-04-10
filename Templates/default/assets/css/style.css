@@ -7,10 +7,38 @@ html,body{
 	padding-bottom:0px;
 	background-color: #f2f2f2;
 }
+* {
+  border-radius: 0 !important;
+}
+*:focus{
+    box-shadow: none !important;
+    border: 0 !important;
+}
+a,
+a:link,
+a:hover,
+a:focus{
+	text-decoration: none;
+}
 header{
 	width: 100%;
 	margin-bottom: 10px;
 }
+.header-nav-right a,
+.header-nav-right a:link,
+.header-nav-right a:hover,
+.header-nav-right a:focus{
+	font-size: 10px;
+	font-weight: bold;
+}
+.navbar-light{
+	background-color: #FFF;
+}
+.btn-grey{
+	background-color: #343a40 !important;
+	border-color: #333 !important;
+}
+
 .apanel_footer{
 	margin-top: 50px;
 	position: fixed;
@@ -158,13 +186,21 @@ a:focus{
 .input-group-secundary{
 	border: 3px solid #ff3800;
 }
+.form-white .form-control,
+.form-white .form-control:focus {
+
+}
+.form-white .form-control::placeholder {
+  color: white;
+  font-size: 1.0em;
+}
 .form-control,
 .form-control:focus{
 	border-radius: 0;
 	background: none;
 	border: none;
-	color: #333;
-	border-bottom: 2px solid #97BE0E;
+	color: #fff;
+	border-bottom: 2px solid #343a40 !important;
 }
 ::placeholder {
   color: white;
@@ -180,7 +216,7 @@ ul.list{
 	border: none;
 }
 .bg-primary{
-	background-color: #333 !important;
+	background-color: #97BE0E !important;
 }
 .custom-file-input-hide{
 	width: 0.1px;
@@ -195,4 +231,61 @@ ul.list{
 }
 .overlay.hover{
 
+}
+.border-left-1{
+	border-left: 1px solid;
+}
+.border-left-grey{
+	border-color: #333;
+}
+.border-right-1{
+	border-right: 1px solid;
+}
+.border-right-grey{
+	border-color: #333;
+
+}
+
+.parallax {
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: 50% 50%;
+}
+.parallax-one {
+	/*background-image: url("../../../../images/design/parallax-one.jpg");*/
+	background: #FFE000;  /* fallback for old browsers */
+	background: -webkit-linear-gradient(to right, #799F0C, #FFE000);  /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to right, #799F0C, #FFE000); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.parallax-two {
+	background-image: url("../../../../images/design/parallax-two.jpg");
+}
+
+.paralsec-three {
+	background-image: url("../../../../images/design/parallax-three.jpg");
+}
+
+.bg-one {
+	background-image: url("../../../../images/design/vendedores-de-inmuebles.jpg");
+	-webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center center fixed;
+}
+
+.mt-negativo{
+	margin-top: -50px;
+}
+
+.svg-grey path{
+	fill: #f2f2f2 !IMPORTANT;
+	-webkit-filter: drop-shadow( 1px 2px 5px rgba(0, 0, 0, .7));
+  filter: drop-shadow( 1px 2px 5px rgba(0, 0, 0, .7));
+}
+
+.overflow-hide{
+	overflow: hidden;
 }

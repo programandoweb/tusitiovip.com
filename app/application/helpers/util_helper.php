@@ -158,9 +158,33 @@ function get_avatar($perfil_id){
 	}
 }
 
-function template_header($replace=''){
+function template_header($replace='',$scripts_arrays=array()){
+	$scripts_adicionales	=	"";
+	$ready	=	'';
+	if(!empty($scripts_arrays)){
+		foreach ($scripts_arrays as $key => $value) {
+			if($key=='js'){
+				foreach ($value as $key2 => $value2) {
+					$scripts_adicionales		.=	'<script type="text/javascript" src="'.DOMINIO.'/'.TEMPLATE.'/assets/'.$value2.'"></script>';
+				}
+			}else if($key=='css'){
+				foreach ($value as $key2 => $value2) {
+					$scripts_adicionales		.=	'<link href="'.DOMINIO.'/'.TEMPLATE.'/assets/'.$value2.'" rel="stylesheet">';
+				}
+			}else if($key=='ready'){
+				foreach ($value as $key2 => $value2) {
+					$ready	=	$value2;
+				}
+			}
+
+			//$scripts_adicionales			.=			'<link href="'.HTML.'/'.TEMPLATE.'/assets/css/fonts.css" rel="stylesheet">';
+		}
+	}
+	if($ready!=''){
+		$scripts_adicionales	.= '<script>$(document).ready(function(){'.$ready.'})</script>';
+	}
 	$html 	=	file_get_contents(PATH_BASE_APP.'../'.TEMPLATE.'/header.php');
-	return 	str_replace(array("{htm}","{metatags}","{template}"), array(DOMINIO,$replace,TEMPLATE),$html);
+	return 	str_replace(array("{htm}","{metatags}","{template}","{extrascript}"), array(DOMINIO,$replace,TEMPLATE,$scripts_adicionales),$html);
 }
 
 function template_footer(){

@@ -136,6 +136,11 @@ define('FROM_EMAIL'				,	SMTP_USER);
 define('IMG',DOMINIO."/images/");
 define('PATH_IMG',dirname(__FILE__)."/images/");
 
+/*SOCIAL NETWORK*/
+define('SN_FACEBOOK','https://www.facebook.com/tusitiovip/');
+define('SN_TWITTER','https://www.twitter.com/tusitiovip/');
+define('SN_INSTAGRAM','https://www.instagram.com/tusitiovip/');
+
 /*OTHERS*/
 define('ELEMENTOS_X_PAGINA',10);
 define('PATH_BASE_APP',dirname(__FILE__).'/app/');
@@ -149,6 +154,8 @@ define('SESSION_TIME',3600);
 define('PROFILE_TIME',360);//30 dias
 define('MODULO_X_DEFAULT',"Apanel");
 define('TEMPLATE',"Templates/default");
+
+
 
 /*
  *---------------------------------------------------------------

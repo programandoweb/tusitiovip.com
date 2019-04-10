@@ -55,8 +55,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+$route['buscador/de-inmuebles'] 	          = 	'Home/Buscador';
 $route['(Alquiler|Venta)/(:any)/(:any)'] 	  = 	'Home/Inmueble';
-$route['(Apanel)']                          =   'Apanel';
+$route['(Apanel)']              = 'Apanel';
 $route['p/(:any)']              = 'home/Routing';
 $route['default_controller']    = 'home';
 $route['404_override'] 				  = 'Main/error_404';

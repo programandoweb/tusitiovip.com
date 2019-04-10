@@ -16,6 +16,8 @@ class Apanel extends CI_Controller {
 		$this->ModuloActivo	=	'Apanel';
 		$this->Path			=	PATH_VIEW.'/Template/'.$this->ModuloActivo;
 		$this->listar		=	new stdClass();
+    // $this->load->library('CI_Minifier');
+		// $this->ci_minifier->init('html,css,js');
 
 		if(empty($this->user)){
 			redirect(base_url("Main"));	return;

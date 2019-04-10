@@ -90,6 +90,11 @@ class Gestion_model extends CI_Model {
 		if($var["id"]==0){
 			$this->return->id		=		$var["id"];
 			unset($var["id"]);
+			unset($var["redirect"]);
+			unset($var["municipio"]);
+			unset($var["ciudad"]);
+			unset($var["casa"]);
+
 			if($this->db->insert(DB_PREFIJO."anuncio",$var)){
 				$return=true;
 				$this->return->id	=		$insert_id = $this->db->insert_id();
@@ -98,6 +103,10 @@ class Gestion_model extends CI_Model {
 			$this->db->where("id",$var["id"]);
 			$insert_id = $var["id"];
 			unset($var["redirect"]);
+			unset($var["municipio"]);
+			unset($var["ciudad"]);
+			unset($var["casa"]);
+
 			if($this->db->update(DB_PREFIJO."anuncio",$var)){
 				$this->return->id		=		$var["id"];
 				$return=true;

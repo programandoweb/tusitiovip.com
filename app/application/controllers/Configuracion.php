@@ -24,6 +24,8 @@ class Configuracion extends CI_Controller {
 		if(empty($this->user)){
 			redirect(base_url("Main"));	return;
 		}
+		// $this->load->library('CI_Minifier');
+		// $this->ci_minifier->init('html,css,js');
 
 		$this->load->model("Configuracion_model");
 		$this->Configuracion	= 	new Configuracion_model();

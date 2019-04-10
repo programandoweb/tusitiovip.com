@@ -11,6 +11,8 @@ class Autenticacion extends CI_Controller {
 		$this->Autenticacion 	= 	new Autenticacion_model();
 		$this->user				=	$this->session->userdata('User');
 		$this->Response			=	array();
+		// $this->load->library('CI_Minifier');
+		// $this->ci_minifier->init('html,css,js');
 }
 
 	public function Index(){

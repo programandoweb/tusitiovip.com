@@ -24,6 +24,8 @@ class Home extends CI_Controller {
 		$this->View			=	$this->uri->segment(2).(1)?"":"";
 		$this->load->model("Home_model");
 		$this->Home				= 	new Home_model();
+		// $this->load->library('CI_Minifier');
+		// $this->ci_minifier->init('html,css,js');
     }
 
 	public function Index(){
@@ -36,6 +38,10 @@ class Home extends CI_Controller {
 	public function Favorites(){
 		$url	=	base_url("Search/Profiles/Bot?fv=true");
 		redirect($url);
+	}
+
+	public function Buscador(){
+
 	}
 
 	public function Routing(){
